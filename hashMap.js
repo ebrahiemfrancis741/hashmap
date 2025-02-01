@@ -1,3 +1,5 @@
+import { createLinkedList } from "./linkedList.js";
+
 class HashMap {
   #data;
   #loadFactor;
