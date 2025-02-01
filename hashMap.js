@@ -87,10 +87,33 @@ class HashMap {
       this.#data[hashCode].append(JSON.stringify(keyValuePair));
     }
   }
+
+  get(key) {
+    let hashCode = this.hash(key);
+    if (this.#data[hashCode] == undefined) {
+      // empty bucket, return null
+      return null;
+    } else {
+      let keyValuePair;
+      for (let i = 0; i < this.#data[hashCode].size; i++) {
+        keyValuePair = JSON.parse(this.#data[hashCode].at(i));
+        /*
+          Use hasOwnProperty() because the value of each node in the list 
+          is an object and we are looking for the property name of that 
+          object
+        */
+        if (keyValuePair.hasOwnProperty(key)) {
+          return keyValuePair[key];
+        }
+      }
+      // if key not found return null
+      return null;
+    }
+  }
 }
 
 const test = new HashMap();
 test.set("apple", "red");
 test.set("apple", "green");
 test.set("orange", "yellow");
-console.log();
+console.log(test.get("apple"));
