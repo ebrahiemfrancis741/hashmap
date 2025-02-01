@@ -46,6 +46,51 @@ class HashMap {
 
     return hashCode;
   }
+
+  set(key, value) {
+    let hashCode = this.hash(key);
+    let keyValuePair = {};
+    /*  
+      Only add linked list to a bucket when needed. Ideally 
+      we should only make it a linked list if/when a collision 
+      occurs, but we are just keeping it simple for now. Can 
+      always be changed later
+    */
+    if (this.#data[hashCode] == undefined) {
+      this.#data[hashCode] = createLinkedList();
+      keyValuePair[key] = value;
+      this.#data[hashCode].append(JSON.stringify(keyValuePair));
+    } else {
+      /*
+        check if we need to update key:value pair or 
+        add a new key:value pair
+      */
+      /*
+        We will need to traverse the list for this since we cannot 
+        simply use the linkedList.contains(value) method or the 
+        linkedList.find(value) method because the value is stored 
+        as JSON with key:(old value) and we do not know the old value 
+        to make a match
+      */
+      for (let i = 0; i < this.#data[hashCode].size; i++) {
+        let node = JSON.parse(this.#data[hashCode].at(i));
+        if (node.hasOwnProperty(key)) {
+          // update the key:value pair by removing it and adding it again
+          this.#data[hashCode].removeAt(i);
+          keyValuePair[key] = value;
+          this.#data[hashCode].append(JSON.stringify(keyValuePair));
+          return;
+        }
+      }
+      // if we reach this point we need to add new node in the list
+      keyValuePair[key] = value;
+      this.#data[hashCode].append(JSON.stringify(keyValuePair));
+    }
+  }
 }
 
 const test = new HashMap();
+test.set("apple", "red");
+test.set("apple", "green");
+test.set("orange", "yellow");
+console.log();
