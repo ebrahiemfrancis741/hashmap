@@ -156,6 +156,12 @@ class HashMap {
     }
     return count;
   }
+
+  clear() {
+    for (let i = 0; i < this.#capacity; i++) {
+      this.#data[i] = undefined;
+    }
+  }
 }
 
 const test = new HashMap();
@@ -173,5 +179,6 @@ if (test.remove("apple")) {
   console.log("no");
 }
 
-// console.log(test.data);
+test.clear();
+console.log(test.data);
 console.log(test.length());
