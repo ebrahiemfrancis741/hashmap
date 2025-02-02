@@ -110,10 +110,25 @@ class HashMap {
       return null;
     }
   }
+
+  has(key) {
+    let hashCode = this.hash(key);
+    if (this.#data[hashCode] == undefined) {
+      // bucket is empty
+      return false;
+    }
+    for (let i = 0; i < this.#data[hashCode].size; i++) {
+      let data = JSON.parse(this.#data[hashCode].at(i));
+      if (data.hasOwnProperty(key)) {
+        return true;
+      }
+    }
+    // bucket isnt empty and the key doesnt exist
+    return false;
+  }
 }
 
 const test = new HashMap();
 test.set("apple", "red");
 test.set("apple", "green");
 test.set("orange", "yellow");
-console.log(test.get("apple"));
