@@ -146,21 +146,32 @@ class HashMap {
       }
     }
   }
+
+  length() {
+    let count = 0;
+    for (let i = 0; i < this.#capacity; i++) {
+      if (this.#data[i] != undefined) {
+        count += this.#data[i].size;
+      }
+    }
+    return count;
+  }
 }
 
 const test = new HashMap();
 test.set("apple", "red");
 test.set("apple", "green");
+test.set("apple", "white");
 test.set("orange", "yellow");
+test.set("orange", "grey");
+test.set("banana", "black");
+test.set("banana", "red");
 
 if (test.remove("apple")) {
   console.log("yes");
 } else {
   console.log("no");
 }
-test.set("banana", "black");
 
-console.log(test.data);
-
-test.set("apple", "white");
-console.log(test.data);
+// console.log(test.data);
+console.log(test.length());
