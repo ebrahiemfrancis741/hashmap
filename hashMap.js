@@ -126,9 +126,41 @@ class HashMap {
     // bucket isnt empty and the key doesnt exist
     return false;
   }
+
+  remove(key) {
+    if (!this.has(key)) {
+      return false;
+    } else {
+      let hashCode = this.hash(key);
+      for (let i = 0; i < this.#data[hashCode].size; i++) {
+        let data = JSON.parse(this.#data[hashCode].at(i));
+        if (data.hasOwnProperty(key)) {
+          this.#data[hashCode].removeAt(i);
+          // if the link list is empty lets just remove it
+          if (this.#data[hashCode].size == 0) {
+            this.#data[hashCode] = undefined;
+          }
+
+          return true;
+        }
+      }
+    }
+  }
 }
 
 const test = new HashMap();
 test.set("apple", "red");
 test.set("apple", "green");
 test.set("orange", "yellow");
+
+if (test.remove("apple")) {
+  console.log("yes");
+} else {
+  console.log("no");
+}
+test.set("banana", "black");
+
+console.log(test.data);
+
+test.set("apple", "white");
+console.log(test.data);

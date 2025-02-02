@@ -125,6 +125,7 @@ function createLinkedList() {
       */
       if (index == 0) {
         this.head = node.next;
+        this.tail = null; // this should be added to linked list project
         this.size--;
         return;
       } else if (index == this.size - 1) {
