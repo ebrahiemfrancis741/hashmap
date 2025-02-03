@@ -187,6 +187,15 @@ class HashMap {
     }
     return values;
   }
+
+  entries() {
+    let keys = this.keys();
+    let entries = [];
+    for (let i = 0; i < keys.length; i++) {
+      entries.push([keys[i], this.get(keys[i])]);
+    }
+    return  entries;
+  }
 }
 
 const test = new HashMap();
@@ -198,5 +207,4 @@ test.set("orange", "5");
 test.set("banana", "6");
 test.set("banana", "7");
 
-console.log(test.keys());
-console.log(test.values());
+console.log(test.entries());
