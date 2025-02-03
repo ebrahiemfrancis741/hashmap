@@ -162,6 +162,22 @@ class HashMap {
       this.#data[i] = undefined;
     }
   }
+
+  keys() {
+    //Object.entries(object)
+    let keys = [];
+    for (let i = 0; i < this.#capacity; i++) {
+      if (this.#data[i] != undefined) {
+        for (let j = 0; j < this.#data[i].size; j++) {
+          let data = JSON.parse(this.#data[i].at(j));
+          let keyValuePairs = Object.entries(data);
+          let key = keyValuePairs[0][0];
+          keys.push(key);
+        }
+      }
+    }
+    return keys;
+  }
 }
 
 const test = new HashMap();
@@ -173,12 +189,4 @@ test.set("orange", "grey");
 test.set("banana", "black");
 test.set("banana", "red");
 
-if (test.remove("apple")) {
-  console.log("yes");
-} else {
-  console.log("no");
-}
-
-test.clear();
-console.log(test.data);
-console.log(test.length());
+console.log(test.keys());
