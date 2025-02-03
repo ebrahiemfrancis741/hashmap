@@ -28,7 +28,7 @@ class HashMap {
   }
 
   get capacity() {
-    this.#capacity;
+    return this.#capacity;
   }
 
   set capacity(capacity) {
@@ -47,9 +47,23 @@ class HashMap {
     return hashCode;
   }
 
+  // rehash keys and store key,value pairs in the upgraded hashmap
+  rehash() {
+    let entries = this.entries();
+    this.capacity *= 2;
+    this.clear();
+    for (let i = 0; i < entries.length; i++) {
+      this.set(entries[i][0], entries[i][1]);
+    }
+  }
+
   set(key, value) {
     let hashCode = this.hash(key);
     let keyValuePair = {};
+
+    if (this.length() >= this.capacity * this.loadFactor) {
+      this.rehash();
+    }
     /*  
       Only add linked list to a bucket when needed. Ideally 
       we should only make it a linked list if/when a collision 
@@ -194,17 +208,28 @@ class HashMap {
     for (let i = 0; i < keys.length; i++) {
       entries.push([keys[i], this.get(keys[i])]);
     }
-    return  entries;
+    return entries;
   }
 }
 
 const test = new HashMap();
-test.set("apple", "1");
-test.set("apple", "2");
-test.set("apple", "3");
-test.set("orange", "4");
-test.set("orange", "5");
-test.set("banana", "6");
-test.set("banana", "7");
-
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
 console.log(test.entries());
+console.log(test.length());
+test.set("moon", "silver");
+console.log(test.entries());
+console.log(test.length());
+test.set("strawberry", "red");
+console.log(test.entries());
+console.log(test.length());
