@@ -178,15 +178,25 @@ class HashMap {
     }
     return keys;
   }
+
+  values() {
+    let keys = this.keys();
+    let values = [];
+    for (let i = 0; i < keys.length; i++) {
+      values.push(this.get(keys[i]));
+    }
+    return values;
+  }
 }
 
 const test = new HashMap();
-test.set("apple", "red");
-test.set("apple", "green");
-test.set("apple", "white");
-test.set("orange", "yellow");
-test.set("orange", "grey");
-test.set("banana", "black");
-test.set("banana", "red");
+test.set("apple", "1");
+test.set("apple", "2");
+test.set("apple", "3");
+test.set("orange", "4");
+test.set("orange", "5");
+test.set("banana", "6");
+test.set("banana", "7");
 
 console.log(test.keys());
+console.log(test.values());
