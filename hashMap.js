@@ -1,3 +1,4 @@
+import { LinkedList } from "ef-linked-list";
 import { createLinkedList } from "./linkedList.js";
 
 class HashMap {
@@ -178,7 +179,6 @@ class HashMap {
   }
 
   keys() {
-    //Object.entries(object)
     let keys = [];
     for (let i = 0; i < this.#capacity; i++) {
       if (this.#data[i] != undefined) {
