@@ -107,13 +107,13 @@ class HashMap {
 
   get(key) {
     let hashCode = this.hash(key);
-    if (this.#data[hashCode] == undefined) {
+    if (this.data[hashCode] == undefined) {
       // empty bucket, return null
       return null;
-    } else {
+    } else if (this.data[hashCode] instanceof LinkedList) {
       let keyValuePair;
-      for (let i = 0; i < this.#data[hashCode].size; i++) {
-        keyValuePair = JSON.parse(this.#data[hashCode].at(i));
+      for (let i = 0; i < this.data[hashCode].size; i++) {
+        keyValuePair = JSON.parse(this.data[hashCode].at(i));
         /*
           Use hasOwnProperty() because the value of each node in the list 
           is an object and we are looking for the property name of that 
@@ -125,6 +125,9 @@ class HashMap {
       }
       // if key not found return null
       return null;
+    } else {
+      //this.data[hashCode] is JSON
+      return JSON.parse(this.data[hashCode])[key];
     }
   }
 
@@ -228,4 +231,4 @@ test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
 // test.set('moon', 'silver');
-console.log(test);
+console.log(test.get("lion"));
