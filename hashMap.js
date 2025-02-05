@@ -132,18 +132,9 @@ class HashMap {
   }
 
   has(key) {
-    let hashCode = this.hash(key);
-    if (this.#data[hashCode] == undefined) {
-      // bucket is empty
-      return false;
+    if (this.keys().includes(key)) {
+      return true;
     }
-    for (let i = 0; i < this.#data[hashCode].size; i++) {
-      let data = JSON.parse(this.#data[hashCode].at(i));
-      if (data.hasOwnProperty(key)) {
-        return true;
-      }
-    }
-    // bucket isnt empty and the key doesnt exist
     return false;
   }
 
@@ -243,4 +234,5 @@ test.set("kite", "pink");
 test.set("lion", "golden");
 // test.set('moon', 'silver');
 console.log(test.get("lion"));
-console.log(test.keys());
+console.log(test.entries());
+console.log(test.has("jacket"));
