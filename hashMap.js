@@ -143,17 +143,19 @@ class HashMap {
       return false;
     } else {
       let hashCode = this.hash(key);
-      for (let i = 0; i < this.#data[hashCode].size; i++) {
-        let data = JSON.parse(this.#data[hashCode].at(i));
-        if (data.hasOwnProperty(key)) {
-          this.#data[hashCode].removeAt(i);
-          // if the link list is empty lets just remove it
-          if (this.#data[hashCode].size == 0) {
-            this.#data[hashCode] = undefined;
+      let bucket = this.data[hashCode];
+      if (bucket instanceof LinkedList) {
+        let node;
+        for (let i = 0; i < bucket.size; i++) {
+          node = JSON.parse(bucket.at(i));
+          if (node.hasOwnProperty(key)) {
+            bucket.removeAt(i);
+            return true;
           }
-
-          return true;
         }
+      } else {
+        this.data[hashCode] = undefined;
+        return true;
       }
     }
   }
@@ -226,8 +228,9 @@ test.set("ice cream", "white");
 test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
-test.set('moon', 'silver');
-console.log(test.values());
+test.set("moon", "silver");
+test.remove("moon");
+test.remove("lion");
 console.log(test.entries());
 console.log(test.has("jacket"));
 console.log(test.length());
