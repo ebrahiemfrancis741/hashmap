@@ -65,41 +65,43 @@ class HashMap {
     if (this.length() >= this.capacity * this.loadFactor) {
       this.rehash();
     }
-    /*  
-      Only add linked list to a bucket when needed. Ideally 
-      we should only make it a linked list if/when a collision 
-      occurs, but we are just keeping it simple for now. Can 
-      always be changed later
-    */
-    if (this.#data[hashCode] == undefined) {
-      this.#data[hashCode] = createLinkedList();
+
+    if (this.data[hashCode] == undefined) {
       keyValuePair[key] = value;
-      this.#data[hashCode].append(JSON.stringify(keyValuePair));
-    } else {
+      this.data[hashCode] = JSON.stringify(keyValuePair);
+    } else if (this.data[hashCode] instanceof LinkedList) {
       /*
-        check if we need to update key:value pair or 
-        add a new key:value pair
+        A linked list exists here we either update or append a new value
       */
-      /*
-        We will need to traverse the list for this since we cannot 
-        simply use the linkedList.contains(value) method or the 
-        linkedList.find(value) method because the value is stored 
-        as JSON with key:(old value) and we do not know the old value 
-        to make a match
-      */
-      for (let i = 0; i < this.#data[hashCode].size; i++) {
-        let node = JSON.parse(this.#data[hashCode].at(i));
-        if (node.hasOwnProperty(key)) {
-          // update the key:value pair by removing it and adding it again
-          this.#data[hashCode].removeAt(i);
-          keyValuePair[key] = value;
-          this.#data[hashCode].append(JSON.stringify(keyValuePair));
-          return;
+      let currenKVpair;
+      for (let i = 0; i < this.data[hashCode].length; i++) {
+        currenKVpair = JSON.parse(this.data[hashCode].at(i));
+        if (currenKVpair.hasOwnProperty(key)) {
+          // update the value
+          currenKVpair[key] = value;
+          this.data[hashCode].removeAt(i);
+          this.data[hashCode].append(JSON.stringify(currenKVpair));
         }
       }
-      // if we reach this point we need to add new node in the list
       keyValuePair[key] = value;
-      this.#data[hashCode].append(JSON.stringify(keyValuePair));
+      this.data[hashCode].append(JSON.stringify(keyValuePair));
+    } else {
+      /*
+        key,value pair exists in this bucket but now a collision has 
+        occured or we need to update the value if the key is the same
+      */
+      let currenKVpair = JSON.parse(this.data[hashCode]);
+      if (currenKVpair.hasOwnProperty(key)) {
+        // update the value
+        currenKVpair[key] = value;
+        this.data[hashCode] = JSON.stringify(currenKVpair);
+      } else {
+        // need to add new value to this bucket by making it a linked list
+        this.data[hashCode] = new LinkedList();
+        this.data[hashCode].append(JSON.stringify(currenKVpair));
+        keyValuePair[key] = value;
+        this.data[hashCode].append(JSON.stringify(keyValuePair));
+      }
     }
   }
 
@@ -225,11 +227,5 @@ test.set("ice cream", "white");
 test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
-console.log(test.entries());
-console.log(test.length());
-test.set("moon", "silver");
-console.log(test.entries());
-console.log(test.length());
-test.set("strawberry", "red");
-console.log(test.entries());
-console.log(test.length());
+// test.set('moon', 'silver');
+console.log(test);
