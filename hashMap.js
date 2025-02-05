@@ -185,12 +185,23 @@ class HashMap {
 
   keys() {
     let keys = [];
-    for (let i = 0; i < this.#capacity; i++) {
-      if (this.#data[i] != undefined) {
-        for (let j = 0; j < this.#data[i].size; j++) {
-          let data = JSON.parse(this.#data[i].at(j));
-          let keyValuePairs = Object.entries(data);
-          let key = keyValuePairs[0][0];
+    let kvPair;
+    let entries;
+    let key;
+    for (let i = 0; i < this.capacity; i++) {
+      let bucket = this.data[i];
+      if (bucket != undefined) {
+        if (bucket instanceof LinkedList) {
+          for (let j = 0; j < bucket.size; j++) {
+            kvPair = JSON.parse(bucket.at(j));
+            entries = Object.entries(kvPair);
+            key = entries[0][0];
+            keys.push(key);
+          }
+        } else {
+          kvPair = JSON.parse(bucket);
+          entries = Object.entries(kvPair);
+          key = entries[0][0];
           keys.push(key);
         }
       }
@@ -232,3 +243,4 @@ test.set("kite", "pink");
 test.set("lion", "golden");
 // test.set('moon', 'silver');
 console.log(test.get("lion"));
+console.log(test.keys());
