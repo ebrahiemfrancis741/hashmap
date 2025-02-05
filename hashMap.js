@@ -42,7 +42,7 @@ class HashMap {
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
       hashCode = primeNumber * hashCode + key.charCodeAt(i);
-      hashCode = hashCode % this.#capacity;
+      hashCode = hashCode % this.capacity;
     }
 
     return hashCode;
@@ -51,8 +51,8 @@ class HashMap {
   // rehash keys and store key,value pairs in the upgraded hashmap
   rehash() {
     let entries = this.entries();
-    this.capacity *= 2;
     this.clear();
+    this.capacity *= 2;
     for (let i = 0; i < entries.length; i++) {
       this.set(entries[i][0], entries[i][1]);
     }
@@ -159,18 +159,12 @@ class HashMap {
   }
 
   length() {
-    let count = 0;
-    for (let i = 0; i < this.#capacity; i++) {
-      if (this.#data[i] != undefined) {
-        count += this.#data[i].size;
-      }
-    }
-    return count;
+    return this.keys().length;
   }
 
   clear() {
-    for (let i = 0; i < this.#capacity; i++) {
-      this.#data[i] = undefined;
+    for (let i = 0; i < this.capacity; i++) {
+      this.data[i] = undefined;
     }
   }
 
@@ -232,7 +226,8 @@ test.set("ice cream", "white");
 test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
-// test.set('moon', 'silver');
-console.log(test.get("lion"));
+test.set('moon', 'silver');
+console.log(test.values());
 console.log(test.entries());
 console.log(test.has("jacket"));
+console.log(test.length());
